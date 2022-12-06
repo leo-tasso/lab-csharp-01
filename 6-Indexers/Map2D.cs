@@ -8,44 +8,69 @@ namespace Indexers
     /// <inheritdoc cref="IMap2D{TKey1,TKey2,TValue}" />
     public class Map2D<TKey1, TKey2, TValue> : IMap2D<TKey1, TKey2, TValue>
     {
+        IDictionary<Tuple<TKey1, TKey2>, TValue> m = new Dictionary<Tuple<TKey1, TKey2>, TValue>();
         /// <inheritdoc cref="IMap2D{TKey1, TKey2, TValue}.NumberOfElements" />
         public int NumberOfElements
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get => m.Count;
         }
 
         /// <inheritdoc cref="IMap2D{TKey1, TKey2, TValue}.this" />
         public TValue this[TKey1 key1, TKey2 key2]
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get => m[new Tuple<TKey1, TKey2>(key1, key2)];
+            set => m[new Tuple<TKey1, TKey2>(key1, key2)] = value;
         }
 
         /// <inheritdoc cref="IMap2D{TKey1, TKey2, TValue}.GetRow(TKey1)" />
         public IList<Tuple<TKey2, TValue>> GetRow(TKey1 key1)
         {
-            throw new NotImplementedException();
+            IList<Tuple<TKey2, TValue>> res = new List<Tuple<TKey2, TValue>>();
+            foreach (Tuple<TKey1, TKey2> t in m.Keys)
+            {
+                if (t.Item1.Equals(key1))
+                {
+                    res.Add(new Tuple<TKey2, TValue>(t.Item2, m[new Tuple<TKey1, TKey2>(key1, t.Item2)]));
+                }
+            }
+            return res;
         }
 
         /// <inheritdoc cref="IMap2D{TKey1, TKey2, TValue}.GetColumn(TKey2)" />
         public IList<Tuple<TKey1, TValue>> GetColumn(TKey2 key2)
         {
-            throw new NotImplementedException();
+            IList<Tuple<TKey1, TValue>> res = new List<Tuple<TKey1, TValue>>();
+            foreach (Tuple<TKey1, TKey2> t in m.Keys)
+            {
+                if (t.Item2.Equals(key2))
+                {
+                    res.Add(new Tuple<TKey1, TValue>(t.Item1, m[new Tuple<TKey1, TKey2>(t.Item1, key2)]));
+                }
+            }
+            return res;
         }
 
         /// <inheritdoc cref="IMap2D{TKey1, TKey2, TValue}.GetElements" />
         public IList<Tuple<TKey1, TKey2, TValue>> GetElements()
         {
-            throw new NotImplementedException();
+            IList<Tuple<TKey1, TKey2, TValue>> res = new List<Tuple<TKey1, TKey2, TValue>>();
+            foreach (Tuple<TKey1, TKey2> k in m.Keys)
+            {
+                res.Add(new Tuple<TKey1, TKey2, TValue>(k.Item1, k.Item2, m[k]));
+            }
+            return res;
         }
 
         /// <inheritdoc cref="IMap2D{TKey1, TKey2, TValue}.Fill(IEnumerable{TKey1}, IEnumerable{TKey2}, Func{TKey1, TKey2, TValue})" />
         public void Fill(IEnumerable<TKey1> keys1, IEnumerable<TKey2> keys2, Func<TKey1, TKey2, TValue> generator)
         {
-            throw new NotImplementedException();
+            foreach (TKey1 k1 in keys1)
+            {
+                foreach (TKey2 k2 in keys2)
+                {
+                    m.Add(new Tuple<TKey1, TKey2>(k1, k2), generator(k1, k2));
+                }
+            }
         }
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)" />
