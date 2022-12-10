@@ -76,29 +76,46 @@ namespace Indexers
         /// <inheritdoc cref="IEquatable{T}.Equals(T)" />
         public bool Equals(IMap2D<TKey1, TKey2, TValue> other)
         {
-            // TODO: improve
-            return base.Equals(other);
+            if (other is Map2D<TKey1, TKey2, TValue> otherMap2d)
+            {
+                return this.Equals(otherMap2d);
+            }
+
+            return false;
         }
 
         /// <inheritdoc cref="object.Equals(object?)" />
         public override bool Equals(object obj)
         {
-            // TODO: improve
-            return base.Equals(obj);
+            if (obj is null)
+            {
+                return false;
+            }
+
+            if (obj == this)
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return this.Equals(obj as Map2D<TKey1, TKey2, TValue>);
         }
 
         /// <inheritdoc cref="object.GetHashCode"/>
         public override int GetHashCode()
         {
-            // TODO: improve
-            return base.GetHashCode();
+            return this.m != null ? this.m.GetHashCode() : 0;
         }
 
         /// <inheritdoc cref="IMap2D{TKey1, TKey2, TValue}.ToString"/>
         public override string ToString()
         {
-            // TODO: improve
-            return base.ToString();
+            return "{ " + string.Join(", ", this.GetElements()
+                       .Select(t => $"({t.Item1}, {t.Item2}) -> {t.Item3}")) + "}";
         }
     }
 }

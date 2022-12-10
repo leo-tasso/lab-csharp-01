@@ -18,17 +18,17 @@ namespace Arrays
         /// TODO: implement this method
         /// <seealso cref="Examples.Max"/>
         public static Complex MaxModulus(Complex[] array)
-        {  
-                Complex max = null;
-                for (int i = 0; i < array.Length; i++)
+        {
+            Complex max = null;
+            for (int i = 0; i < array.Length; i++)
+            {
+                var current = array[i];
+                if (max == null || current.Modulus > max.Modulus)
                 {
-                    var current = array[i];
-                    if (max == null || current.Modulus > max.Modulus)
-                    {
-                        max = current;
-                    }
+                    max = current;
                 }
-                return max;
+            }
+            return max;
         }
 
         /// <summary>
@@ -42,8 +42,8 @@ namespace Arrays
         /// TODO: implement this method
         public static Complex[] Clone(Complex[] array)
         {
-            Complex[] res= new Complex[array.Length];
-            for (int i=0; i< array.Length; i++)
+            Complex[] res = new Complex[array.Length];
+            for (int i = 0; i < array.Length; i++)
             {
                 res[i] = array[i];
             }
@@ -79,7 +79,7 @@ namespace Arrays
 
             return res;
         }
-        
+
         /// <summary>
         /// Creates a representation of the provided array of <see cref="Complex"/> as a string.
         /// Items of <paramref name="array"/> are represented via their <see cref="Complex.ToString"/> method.
@@ -93,7 +93,7 @@ namespace Arrays
         public static string ArrayToString(Complex[] array)
         {
             string res = "[";
-            foreach(Complex c in array)
+            foreach (Complex c in array)
             {
                 res += (c.ToString());
                 res += ';';
@@ -102,7 +102,7 @@ namespace Arrays
             res += "]";
             return res; // TODO: remove this line
         }
-        
+
         /// <summary>
         /// Test method for the aforementioned array algorithms
         /// </summary>
@@ -171,7 +171,7 @@ namespace Arrays
             }
             Console.WriteLine($"Array {ArrayToString(actual)} is ok");
         }
-        
+
         /// <summary>
         /// Checks whether the <paramref name="actual"/> <see cref="Complex"/> number is equal to the
         /// <paramref name="expected"/> one (via the <see cref="Complex.Equals(object)"/> method).
